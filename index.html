@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>蜀镇老火锅必吃榜冲榜分析报告</title>
+<style>
+:root{
+  --red:#B03A2E; --red-deep:#8E2B21; --red-soft:#FBEFEC;
+  --gold:#9A7B4F; --gold-soft:#F6F1E7;
+  --ink:#2C2A28; --ink-2:#5C564F; --ink-3:#8A837A;
+  --bg:#F7F5F1; --card:#FFFFFF; --line:#E8E2D9;
+  --ok:#1E8449; --ok-bg:#EAF5EE;
+  --warn:#B7950B; --warn-bg:#FBF6E3;
+  --bad:#C0392B; --bad-bg:#FBEDEB;
+  --blue:#3E6B8F; --blue-bg:#EBF1F6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;font-size:15px}
+.layout{display:flex;max-width:1240px;margin:0 auto;gap:28px;padding:0 24px}
+/* ===== 侧边目录 ===== */
+nav.toc{width:230px;flex-shrink:0;position:sticky;top:0;align-self:flex-start;max-height:100vh;overflow-y:auto;padding:36px 0 40px;scrollbar-width:none}
+nav.toc::-webkit-scrollbar{display:none}
+nav.toc .toc-title{font-size:12px;letter-spacing:3px;color:var(--ink-3);margin-bottom:14px;font-weight:600}
+nav.toc a{display:block;padding:6px 12px;border-left:2px solid transparent;color:var(--ink-2);text-decoration:none;font-size:13px;line-height:1.5;border-radius:0 6px 6px 0;transition:.15s}
+nav.toc a:hover{background:#EFEAE2;color:var(--red)}
+nav.toc a.l2{padding-left:26px;font-size:12px;color:var(--ink-3)}
+main{flex:1;min-width:0;padding-bottom:80px}
+@media (max-width:960px){nav.toc{display:none}}
+/* ===== 头部 ===== */
+header.hero{padding:56px 40px 40px;background:linear-gradient(135deg,#8E2B21 0%,#B03A2E 55%,#C1553F 100%);color:#fff;border-radius:0 0 20px 20px;position:relative;overflow:hidden}
+header.hero::after{content:"";position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.06)}
+header.hero::before{content:"";position:absolute;right:60px;bottom:-120px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05)}
+.hero-tag{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:3px 14px;border-radius:20px;font-size:12px;letter-spacing:2px;margin-bottom:18px}
+header.hero h1{font-size:34px;font-weight:800;letter-spacing:1px;line-height:1.3;margin-bottom:14px}
+.hero-sub{font-size:15px;opacity:.92;max-width:720px}
+.hero-meta{display:flex;gap:26px;margin-top:26px;flex-wrap:wrap}
+.hero-meta .m{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:10px 18px}
+.hero-meta .m b{display:block;font-size:12px;opacity:.75;font-weight:400;margin-bottom:2px}
+.hero-meta .m span{font-size:14px;font-weight:600}
+/* ===== 章节 ===== */
+section{margin-top:56px}
+.chap{display:flex;align-items:baseline;gap:14px;border-bottom:3px solid var(--red);padding-bottom:12px;margin-bottom:26px}
+.chap .no{font-size:15px;font-weight:800;color:var(--red);background:var(--red-soft);border-radius:8px;padding:2px 12px;white-space:nowrap}
+.chap h2{font-size:24px;font-weight:800;color:var(--ink)}
+h3.sec{font-size:18px;font-weight:700;margin:34px 0 14px;color:var(--red-deep);display:flex;align-items:center;gap:8px}
+h3.sec::before{content:"";width:6px;height:18px;background:var(--red);border-radius:3px;display:inline-block}
+h4.sub{font-size:15.5px;font-weight:700;margin:24px 0 10px;color:var(--ink)}
+p.body{margin:10px 0;color:var(--ink-2)}
+.lead{background:var(--card);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:16px 20px;color:var(--ink-2);font-size:15px;box-shadow:0 1px 4px rgba(60,50,30,.05)}
+/* ===== 卡片 ===== */
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px;box-shadow:0 1px 5px rgba(60,50,30,.05);margin:16px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media (max-width:900px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+.k-card{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--red);border-radius:12px;padding:18px 20px;box-shadow:0 1px 4px rgba(60,50,30,.05)}
+.k-card .t{font-weight:700;font-size:14.5px;margin-bottom:8px;color:var(--ink)}
+.k-card .d{font-size:13.5px;color:var(--ink-2)}
+/* ===== 徽章 ===== */
+.badge{display:inline-block;padding:2px 12px;border-radius:14px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.badge.ok{background:var(--ok-bg);color:var(--ok)}
+.badge.warn{background:var(--warn-bg);color:var(--warn)}
+.badge.bad{background:var(--bad-bg);color:var(--bad)}
+.badge.info{background:var(--blue-bg);color:var(--blue)}
+/* ===== 表格 ===== */
+.tbl-wrap{overflow-x:auto;margin:16px 0;border-radius:12px;border:1px solid var(--line);background:var(--card);box-shadow:0 1px 4px rgba(60,50,30,.05)}
+table.tbl{width:100%;border-collapse:collapse;font-size:13.5px;min-width:640px}
+table.tbl th{background:var(--red);color:#fff;font-weight:600;padding:10px 14px;text-align:left;white-space:nowrap}
+table.tbl th.c,table.tbl td.c{text-align:center}
+table.tbl td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:top;color:var(--ink-2)}
+table.tbl tr:nth-child(even) td{background:#FBFAF7}
+table.tbl td b,table.tbl td strong{color:var(--ink)}
+table.tbl td .num{font-variant-numeric:tabular-nums}
+table.tbl tr.hl td{background:var(--warn-bg)}
+table.tbl td.self{background:var(--red-soft)!important;color:var(--red-deep);font-weight:600}
+table.tbl td.best{color:var(--bad);font-weight:700}
+table.tbl td.rival-top{color:var(--ok);font-weight:600}
+/* 高频关键词 TOP1 突出 */
+table.tbl td.kw1{position:relative;font-weight:800;font-size:14.5px;color:var(--ink);background:#F3EDE2!important;box-shadow:inset 0 0 0 2px rgba(154,123,79,.35);border-radius:6px}
+table.tbl td.kw1::after{content:"TOP1";display:block;margin-top:3px;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--gold)}
+table.tbl td.kw1.self{background:#F7E4E0!important;color:var(--red-deep);box-shadow:inset 0 0 0 2px rgba(176,58,46,.45)}
+table.tbl td.kw1.self::after{color:var(--red)}
+table.tbl td.kw-dim{font-weight:400;color:var(--ink-3);font-size:13px}
+table.tbl td.kw-dim.self{color:#A8705F;font-weight:400}
+/* ===== 引用 / 结论 ===== */
+.quote{background:var(--gold-soft);border:1px solid #E8DCC4;border-radius:12px;padding:18px 22px;margin:14px 0}
+.quote .q{font-size:16px;font-weight:600;color:var(--ink)}
+.quote .note{font-size:13.5px;color:var(--ink-2);margin-top:8px}
+.formula{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin:16px 0;box-shadow:0 1px 4px rgba(60,50,30,.05)}
+.formula .f{background:var(--red-soft);color:var(--red-deep);font-weight:700;padding:8px 16px;border-radius:10px;font-size:14.5px}
+.formula .op{font-size:18px;font-weight:800;color:var(--gold)}
+.callout{border-radius:12px;padding:16px 20px;margin:14px 0;font-size:14px}
+.callout.gold{background:var(--gold-soft);border:1px solid #E8DCC4}
+.callout.red{background:var(--bad-bg);border:1px solid #F0C9C3}
+.callout b{color:var(--red-deep)}
+/* ===== 编号列表 ===== */
+ol.num{counter-reset:n;list-style:none;margin:12px 0}
+ol.num li{counter-increment:n;position:relative;padding:10px 14px 10px 52px;margin:8px 0;background:var(--card);border:1px solid var(--line);border-radius:10px;font-size:14px;color:var(--ink-2)}
+ol.num li::before{content:counter(n);position:absolute;left:14px;top:12px;width:26px;height:26px;border-radius:50%;background:var(--red);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+ol.num li b{color:var(--ink)}
+ul.dot{list-style:none;margin:10px 0}
+ul.dot li{position:relative;padding:5px 0 5px 22px;color:var(--ink-2);font-size:14px}
+ul.dot li::before{content:"";position:absolute;left:4px;top:14px;width:7px;height:7px;border-radius:50%;background:var(--red)}
+ul.dot li b{color:var(--ink)}
+/* ===== slogan ===== */
+.slogan{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:14px 0}
+@media (max-width:800px){.slogan{grid-template-columns:1fr}}
+.slogan .s{background:var(--card);border:1px dashed var(--red);border-radius:12px;padding:22px 18px;text-align:center;font-size:17px;font-weight:700;color:var(--red-deep)}
+.slogan .s small{display:block;font-weight:400;font-size:12px;color:var(--ink-3);margin-top:8px;letter-spacing:2px}
+/* ===== 图表通用 ===== */
+.chart-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin:16px 0;box-shadow:0 1px 4px rgba(60,50,30,.05)}
+.chart-title{font-size:15px;font-weight:700;margin-bottom:4px;color:var(--ink)}
+.chart-sub{font-size:12.5px;color:var(--ink-3);margin-bottom:16px}
+.hbar-row{display:flex;align-items:center;gap:10px;margin:7px 0}
+.hbar-row .lbl{width:120px;flex-shrink:0;font-size:13px;color:var(--ink-2);text-align:right}
+.hbar-row .track{flex:1;background:#F1EDE6;border-radius:6px;height:22px;position:relative;overflow:visible}
+.hbar-row .fill{height:100%;border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:12px;font-weight:600;color:#fff;min-width:34px}
+.hbar-row .val-out{position:absolute;left:calc(100% + 8px);top:0;font-size:12px;font-weight:700;color:var(--ink-2);line-height:22px;white-space:nowrap}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin:8px 0 14px;font-size:12.5px;color:var(--ink-2)}
+.legend .li{display:flex;align-items:center;gap:6px}
+.legend .sw{width:12px;height:12px;border-radius:3px}
+/* ===== 对比条（蜀镇 vs 上榜门店）===== */
+.vs-wrap{display:grid;grid-template-columns:110px 1fr 110px 1fr;gap:6px 10px;align-items:center;font-size:13px}
+@media (max-width:760px){.vs-wrap{grid-template-columns:90px 1fr 90px 1fr}}
+.vs-head{font-weight:700;font-size:13.5px;text-align:center;padding:6px 0;border-radius:8px}
+.vs-head.left{background:var(--red-soft);color:var(--red-deep)}
+.vs-head.right{background:var(--blue-bg);color:var(--blue)}
+.vs-dim{text-align:right;color:var(--ink-2);font-weight:600}
+/* ===== 价格带图 ===== */
+.price-band{position:relative;padding:6px 0 0}
+.price-band .scale{position:relative;padding-left:130px}
+.price-band .row{display:flex;align-items:center;height:34px;margin:0 0 6px -130px}
+.price-band .name{flex:0 0 130px;font-size:13px;color:var(--ink-2);white-space:nowrap;padding-right:10px;box-sizing:border-box}
+.price-band .lane{position:relative;flex:1;height:34px;background:#F1EDE6;border-radius:17px}
+.price-band .zone-wrap{position:absolute;left:130px;right:0;top:0;bottom:26px;z-index:2;pointer-events:none}
+.price-band .zone{position:absolute;top:0;bottom:0;background:rgba(95,141,110,.07);border-left:1.5px dashed #5F8D6E;border-right:1.5px dashed #5F8D6E;border-radius:4px}
+.price-band .row{position:relative;z-index:1}
+.price-band .band{position:absolute;top:4px;height:26px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;white-space:nowrap;background:#5F8D6E;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.price-band .band.self{background:var(--red)}
+.price-band .dot{position:absolute;top:5px;width:24px;height:24px;border-radius:50%;background:#5F8D6E;margin-left:-12px;box-shadow:0 0 0 3px rgba(95,141,110,.18)}
+.price-band .tag{position:absolute;top:0;line-height:34px;margin-left:18px;font-size:12.5px;font-weight:700;color:#4E7A5C;white-space:nowrap}
+.price-band .ax{position:relative;height:20px;margin-top:2px;border-top:1px solid var(--line)}
+.price-band .ax span{position:absolute;top:3px;transform:translateX(-50%);font-size:11.5px;color:var(--ink-3);white-space:nowrap}
+/* ===== 摘要大数字 ===== */
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:16px 0}
+@media (max-width:800px){.stat-strip{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center}
+.stat .v{font-size:24px;font-weight:800;color:var(--red)}
+.stat .k{font-size:12.5px;color:var(--ink-3);margin-top:4px}
+/* ===== 流程 ===== */
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:12px 0}
+.flow .step{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 16px;font-size:13.5px;font-weight:600;color:var(--ink)}
+.flow .arrow{color:var(--gold);font-weight:800}
+/* ===== 一图看懂对比 ===== */
+.vs-cards{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch;margin:14px 0}
+@media (max-width:800px){.vs-cards{grid-template-columns:1fr}}
+.vs-card{border-radius:14px;padding:20px 24px}
+.vs-card.good{background:var(--ok-bg);border:1px solid #CBE5D4}
+.vs-card.mine{background:var(--bad-bg);border:1px solid #F0C9C3}
+.vs-card .cap{font-size:12.5px;color:var(--ink-2);margin-bottom:6px}
+.vs-card .big{font-size:22px;font-weight:800;margin-bottom:8px}
+.vs-card.good .big{color:var(--ok)}
+.vs-card.mine .big{color:var(--bad)}
+.vs-card .small{font-size:13px;color:var(--ink-2)}
+.vs-mid{display:flex;align-items:center;font-weight:800;color:var(--ink-3);font-size:16px}
+/* ===== 四差距卡 ===== */
+.gap-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.gap-card .cap{font-size:12.5px;color:var(--ink-3)}
+.gap-card .vs{font-size:15px;font-weight:800;color:var(--red);margin:4px 0 8px}
+.gap-card .d{font-size:13px;color:var(--ink-2)}
+/* ===== 预算柱状图 ===== */
+.bars{display:flex;align-items:flex-end;gap:10px;height:190px;padding:0 4px;border-bottom:2px solid var(--line)}
+.bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:100%}
+.bar .col{width:100%;max-width:44px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#C1553F,#B03A2E);position:relative}
+.bar .col.peak{background:linear-gradient(180deg,#8E2B21,#B03A2E)}
+.bar .v{font-size:12px;font-weight:700;color:var(--red-deep)}
+.bar .m{font-size:11.5px;color:var(--ink-3);margin-top:6px}
+.redline{background:var(--bad-bg);border:1px solid #F0C9C3;border-left:5px solid var(--bad);border-radius:10px;padding:16px 20px;margin:18px 0;font-size:14px;color:var(--ink-2)}
+.redline b{color:var(--bad)}
+.tag-row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.tag{background:#fff;border:1px solid var(--line);border-radius:20px;padding:4px 14px;font-size:12.5px;color:var(--ink-2)}
+.kv{display:flex;gap:8px;align-items:baseline;margin:6px 0}
+.kv .k{flex-shrink:0;font-weight:700;font-size:13.5px;color:var(--ink)}
+.kv .v{font-size:13.5px;color:var(--ink-2)}
+</style>
+</head>
+<body class="">
+
+<header class="hero">
+  <h1>蜀镇老火锅必吃榜冲榜分析报告</h1>
+  <p class="hero-sub">复盘蜀镇老火锅（成都直营门店）连续落榜原因，对标 2026 成都必吃榜同品类同价位上榜门店，明确 2027 年 1 月—2028 年 6 月（2027 榜颁布前）的冲刺重点与月度动作。</p>
+  <div class="hero-meta">
+    <div class="m"><b>复盘对象</b><span>蜀镇老火锅 · 成都直营门店</span></div>
+    <div class="m"><b>对标范围</b><span>2026 成都必吃榜 · 同品类同价位</span></div>
+    <div class="m"><b>冲刺周期</b><span>2027.1 — 2028.6 颁布前</span></div>
+  </div>
+</header>
+
+<div class="layout">
+
+<nav class="toc">
+  <div class="toc-title">目 录</div>
+  <a href="#c1">一、全国必吃榜上榜品牌分析</a>
+  <a href="#c2">二、必吃榜核心要素总结</a>
+  <a href="#c3">三、蜀镇品牌诊断</a>
+  <a class="l2" href="#c3-1">1、官方口径逐条自检</a>
+  <a class="l2" href="#c3-2">2、线上评价分析</a>
+  <a class="l2" href="#c3-3">3、关键词占比缺口</a>
+  <a class="l2" href="#c3-4">4、三大错位点</a>
+  <a href="#c4">四、寻找差距：对标同品类门店</a>
+  <a class="l2" href="#c4-1">1、硬指标对比</a>
+  <a class="l2" href="#c4-2">2、差距的四个方面</a>
+  <a class="l2" href="#c4-3">3、可以学习的方向</a>
+  <a href="#c5">五、数据评估：线上差距</a>
+  <a class="l2" href="#c5-1">1、竞对数据对比</a>
+  <a class="l2" href="#c5-2">2、三大方向总结</a>
+  <a class="l2" href="#c5-3">3、核心考核指标</a>
+  <a class="l2" href="#c5-4">日报 / 周报 / 月报</a>
+  <a href="#c6">六、2027-2028 冲榜行动方案</a>
+  <a href="#c7">七、2027 全年投放预算分配</a>
+</nav>
+
+<main>
+
+<!-- ================= 一 ================= -->
+<section id="c1">
+  <div class="chap"><span class="no">第一章</span><h2>全国必吃榜上榜品牌分析</h2></div>
+
+  <h3 class="sec">上榜总量与城市排名</h3>
+  <div class="chart-card">
+    <div class="chart-title">2026 必吃榜上榜数量 · 城市 TOP 10</div>
+    <div class="chart-sub">成都以 94 家位列全国第三，仅次于上海、北京；成渝双城上榜数反超经济体量更高的广深</div>
+
+    <div class="hbar-row"><div class="lbl">1 上海</div><div class="track"><div class="fill" style="width:100%;background:#8E2B21">160</div></div></div>
+    <div class="hbar-row"><div class="lbl">2 北京</div><div class="track"><div class="fill" style="width:91.3%;background:#A03328">146</div></div></div>
+    <div class="hbar-row"><div class="lbl">3 成都 ★</div><div class="track"><div class="fill" style="width:58.8%;background:#C1553F">94</div></div></div>
+    <div class="hbar-row"><div class="lbl">4 重庆</div><div class="track"><div class="fill" style="width:58.1%;background:#C96B52">93</div></div></div>
+    <div class="hbar-row"><div class="lbl">5 深圳</div><div class="track"><div class="fill" style="width:53.8%;background:#D08065">86</div></div></div>
+    <div class="hbar-row"><div class="lbl">6 广州</div><div class="track"><div class="fill" style="width:53.1%;background:#D08065">85</div></div></div>
+    <div class="hbar-row"><div class="lbl">7 西安</div><div class="track"><div class="fill" style="width:44.4%;background:#D99A80">71</div></div></div>
+    <div class="hbar-row"><div class="lbl">8 武汉</div><div class="track"><div class="fill" style="width:42.5%;background:#D99A80">68</div></div></div>
+    <div class="hbar-row"><div class="lbl">9 苏州</div><div class="track"><div class="fill" style="width:41.9%;background:#E2AD96">67</div></div></div>
+    <div class="hbar-row"><div class="lbl">10 南京</div><div class="track"><div class="fill" style="width:40.6%;background:#E2AD96">65</div></div></div>
+  </div>
+
+  <div class="card">
+    <p class="body">成都上榜 <b>94 家</b>，位列全国上榜餐厅数量<b>第三城</b>，仅次于上海、北京；成渝双城凭借深厚饮食文化底蕴，上榜数反超经济体量更高的广深。四川省内<b>成都、乐山、凉山</b>为上榜商户数 TOP3 城市，凉山、阿坝、宜宾、广元、眉山、自贡、内江等 <b>13 座省内城市</b>今年首次迎来"必吃榜"。</p>
+  </div>
+
+  <h4 class="sub">1.2 城内分布</h4>
+  <div class="card">
+    <div class="kv"><span class="k">行政区 TOP5：</span><span class="v">双流区、武侯区、青羊区、锦江区、金牛区（据四川省消费质量报发布数据）。</span></div>
+    <div class="kv"><span class="k">青羊区 13 家上榜：</span><span class="v">冒椒火辣（奎星楼街店）、饕林餐厅、大洗桑拿鱼专门店（优品道店）、轩轩小院（宽巷子店）、孔干饭、陈麻婆豆腐（旗舰店）、龙森园火锅、将军府·鸡毛店、小谭豆花、乐山鲜知味钵钵鸡、老成都三样面、杨伯英传统杂酱面、小悦蒸饺等。</span></div>
+  </div>
+
+  <h3 class="sec">普遍人均情况</h3>
+  <div class="grid2" style="grid-template-columns:1fr 1.5fr">
+    <div class="chart-card">
+      <div class="chart-title">成都上榜商家人均价位段分布</div>
+      <div class="chart-sub">约 94 家上榜商家</div>
+      <div style="margin-top:10px">
+        <div class="hbar-row"><div class="lbl" style="width:88px">50 元以下</div><div class="track"><div class="fill" style="width:20%;background:#D99A80">约 20%</div></div><div style="width:56px;font-size:12.5px;color:var(--ink-3)">约 19 家</div></div>
+        <div class="hbar-row"><div class="lbl" style="width:88px"><b>50-100 元<br>（主力）</b></div><div class="track"><div class="fill" style="width:62%;background:var(--red)">约 62%</div></div><div style="width:56px;font-size:12.5px;color:var(--ink-3)">约 58 家</div></div>
+        <div class="hbar-row"><div class="lbl" style="width:88px">100 元以上</div><div class="track"><div class="fill" style="width:18%;background:#E2AD96">约 18%</div></div><div style="width:56px;font-size:12.5px;color:var(--ink-3)">约 17 家</div></div>
+      </div>
+      <div class="callout gold" style="margin:18px 0 0">
+        <b>人均特性结论：</b>成都上榜商家呈明显的<b>"中档亲民"纺锤形结构</b>——六成商家集中在 50-100 元区间，20% 在 50 元以下的市井小吃段；百元以上仅约 18%。上榜商家的定价逻辑与必吃榜<b>"好吃不贵、价格亲民"</b>的评选导向高度一致，整体呈现<b>"低价位高频、中价位主体、高价位点缀"</b>的格局。
+      </div>
+    </div>
+    <div class="tbl-wrap" style="margin:0">
+      <table class="tbl">
+        <tbody><tr><th>人均价位段</th><th>主力品类</th><th>代表商家（人均）</th></tr>
+        <tr><td><b>50 元以下</b><br><span style="color:var(--ink-3)">约19家 / 约20%</span></td><td>面食、小吃、简餐</td><td>尹荞面 ¥12、黎叔杂酱面 ¥15、小谭豆花 ¥22、杨伯英传统杂酱面、老成都三样面</td></tr>
+        <tr><td><b>50-100 元</b>（主力）<br><span style="color:var(--ink-3)">约58家 / 约62%</span></td><td>川菜、火锅、烧烤、串串、河鲜</td><td>陶德砂锅 ¥63、冒椒火辣 ¥64、饕林餐厅 ¥65、胖哥来凤鱼 ¥60、森宏鱼庄 ¥88</td></tr>
+        <tr><td><b>100 元以上</b><br><span style="color:var(--ink-3)">约17家 / 约18%</span></td><td>日料、西餐、精品川菜、烤肉</td><td>烤匠麻辣烤鱼 ¥101、园里火锅 ¥145、萬两烤肉 ¥218、DI NAPOLI 窑炉披萨、Muben 末本意大利餐厅</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <h3 class="sec">结构性共同点（官方口径）</h3>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <tbody><tr><th style="width:150px">维度</th><th style="width:130px" class="c">成都数据</th><th>说明</th></tr>
+      <tr><td><b>本地老店</b></td><td class="c"><b>占五成</b></td><td>收录 10 年以上的本地人常去老店占主体（全国口径近 50%）</td></tr>
+      <tr><td><b>城市特色餐厅</b></td><td class="c"><b>占比近 70%</b></td><td>突出"地道风味"，川菜、火锅、市井小吃构成基本盘</td></tr>
+      <tr><td><b>首次上榜</b></td><td class="c"><b>占比近 25%</b></td><td>新面孔持续涌入，榜单保持"发现感"</td></tr>
+      <tr><td><b>今年新上榜</b></td><td class="c"><b>35%</b></td><td>含城市特色餐厅中的新增部分</td></tr>
+      <tr><td><b>常青树</b></td><td class="c"><b>2 家</b></td><td>连续 8 年及以上上榜：乐山胖哥跷脚牛肉、冒椒火辣（奎星楼街店）</td></tr>
+    </tbody></table>
+  </div>
+
+  <h4 class="sub">2.2 六大共性特征</h4>
+  <div class="grid2">
+    <div class="k-card"><div class="t">① 真实口碑驱动，无商业干预</div><div class="d">榜单完全基于用户真实评价评选（2026 评选周期内 <b>1.3 亿人贡献 4 亿条评价</b>），坚持"公平公正不收费"，不采纳人为提名。商家无法靠投放"买榜"，只能靠日复一日的评价沉淀。</div></div>
+    <div class="k-card"><div class="t">② 高频标签："本地人推荐、地道风味、新鲜现制"</div><div class="d">这三项是本年度上榜餐厅的高频画像关键词——几乎每家上榜店都同时具备<b>"本地人常去 + 品类地道 + 现制锅气"</b>三个要素。</div></div>
+    <div class="k-card"><div class="t">③ 市井小店与苍蝇馆子占主导</div><div class="d">全国口径本地街边小店占比近 <b>60%</b>；成都上榜名单中，打牙祭·成都人的苍蝇馆子、明婷饭店、根据地冷锅串串冒菜等社区小店与百年老卤、白家高记肥肠粉等市井品牌均登榜。</div></div>
+    <div class="k-card"><div class="t">④ 单品 / 品类标签极其鲜明</div><div class="d">上榜商家几乎都有<b>"一个品类打天下"</b>的清晰标签：跷脚牛肉、钵钵鸡、杂酱面、豆花、肥肠粉、跷脚牛肉汤锅、怪味干锅、盐边羊肉米线……围绕单一爆品建立认知。</div></div>
+    <div class="k-card"><div class="t">⑤ 老字号与非遗背书加持</div><div class="d">陈麻婆豆腐（旗舰店）、皇城老妈、马旺子·川小馆等老字号在列；兔公馆"酱烧底料制作技艺"入选成都市级非遗——文化背书显著提升口碑厚度。</div></div>
+    <div class="k-card"><div class="t">⑥ 上榜即流量，且以异地客群为主</div><div class="d">据官方数据，一条优质评价可吸引约 <b>2000 次浏览</b>、转化为超千人次到店、其中过半为异地游客；成都本土案例——轩轩小院上榜后门店流量新增约 20%，杨伯英传统杂酱面等商户为承接游客将节假日休息改为错峰休假日。</div></div>
+  </div>
+</section>
+
+<!-- ================= 二 ================= -->
+<section id="c2">
+  <div class="chap"><span class="no">第二章</span><h2>必吃榜核心要素总结</h2></div>
+
+  <div class="formula">
+    <span style="font-weight:700;color:var(--ink)">2026 必吃榜成都画像&nbsp;=</span>
+    <span class="f">老店底子</span><span class="op">×</span>
+    <span class="f">单品爆品（品类代表菜）</span><span class="op">×</span>
+    <span class="f">亲民价格</span><span class="op">×</span>
+    <span class="f">真实评价</span>
+  </div>
+  <div class="card">
+    <p class="body">凡上榜者，多为<b>开了十年上下、本地人复购、围绕一个招牌品类做深做透、且人均不过百</b>的社区型 / 市井型商家。</p>
+  </div>
+
+  <h3 class="sec">蜀镇关键词：核心结论</h3>
+  <div class="grid2">
+    <div class="k-card"><div class="t">品牌归类</div><div class="d">本地人推荐老火锅（蜀镇 14 年）</div></div>
+    <div class="k-card"><div class="t">单品、特点</div><div class="d">没有特别突出的单品或是一提到蜀镇就会想起来的特色、评价中体现不足</div></div>
+    <div class="k-card"><div class="t">人均 / 性价比</div><div class="d">人均卡在上榜商家的上限，考虑线上略微调低人均</div></div>
+    <div class="k-card"><div class="t">评价</div><div class="d">消费后评价、本地人评价占比评价不足，制定门店目标，拉升评价占比</div></div>
+    <div class="k-card" style="grid-column:1/-1"><div class="t">客流饱满</div><div class="d">线上订单数量提升，产生通过平台取号排队现象，线上热度提升</div></div>
+  </div>
+</section>
+
+<!-- ================= 三 ================= -->
+<section id="c3">
+  <div class="chap"><span class="no">第三章</span><h2>蜀镇品牌诊断</h2></div>
+  <div class="lead">对照必吃榜官方评选标准逐条自检，分析全门店消费者评价印象与关键词占比，再复盘 2024-2026 评选周期我们究竟差在哪里。</div>
+
+  <h3 class="sec" id="c3-1">1、按官方口径逐条自检（六条标准）</h3>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <tbody><tr><th style="width:220px">官方评选标准</th><th>蜀镇现状</th><th style="width:140px" class="c">判定</th></tr>
+      <tr><td><b>评价真实可信</b><br><span style="color:var(--ink-3)">无诱导好评、炒作处罚记录</span></td><td>探店软文与投放内容集中在"性价比封神""高逼格"类环境与折扣话术上，讲味道、讲回头客、讲本地人选择的内容太少——评价叙事与"味道型"画像不符</td><td class="c"><span class="badge warn">⚠ 投放口径偏离</span></td></tr>
+      <tr><td><b>口味优中选优</b><br><span style="color:var(--ink-3)">口味分居本城前列</span></td><td>双楠 4.8 / 金楠天街 4.7，数据合格；但评价叙事中口味词汇占比低（环境、无烟、包间词汇主导），口味信号强度不足</td><td class="c"><span class="badge info">合格但偏弱</span></td></tr>
+      <tr><td><b>长期稳定体验佳</b><br><span style="color:var(--ink-3)">收录满 365 天、营业 ≥182 天</span></td><td>2014 年至今 14 年连续经营，双楠店"居民区老店"心智扎实，成都 6 家直营店多年稳定</td><td class="c"><span class="badge ok">✔ 优势项</span></td></tr>
+      <tr><td><b>符合日常消费水平</b><br><span style="color:var(--ink-3)">性价比</span></td><td>人均 80-95 元，处于上榜区间（74-91 元）上沿；但"轻奢 / 高逼格 / 复古奢华"的宣传口径拉高心理价位，历史评价残留"份量不足、价格小贵"</td><td class="c"><span class="badge warn">口径错位</span></td></tr>
+      <tr><td><b>满足日常用餐选择</b><br><span style="color:var(--ink-3)">贴近本城日常偏好</span></td><td>宣传主打约会、商务、宴请场景，而非"本地人日常食堂"的市井定位</td><td class="c"><span class="badge bad">✘ 错位项</span></td></tr>
+      <tr><td><b>无违法违规</b></td><td>证照、食品安全无公开负面记录</td><td class="c"><span class="badge ok">✔ 达标</span></td></tr>
+    </tbody></table>
+  </div>
+
+  <h3 class="sec" id="c3-2">2、全门店线上评价分析：消费者对我们的印象与评价关键词</h3>
+  <p class="body"><b>分析范围：</b>蜀镇老火锅成都全部线上在营门店——双楠直营店（总店口径）、金楠天街直营店、新北直营店、永立星城直营店、机投桥店——的评价文本、网友推荐菜、推荐语与公开 UGC 内容样本。</p>
+
+  <h4 class="sub">消费者印象一句话画像</h4>
+  <div class="quote">
+    <div class="q">"一家环境干净新中式、吃完身上没味道、适合约会商务和家庭聚餐的火锅店——锅底和毛肚也还不错。"</div>
+    <div class="note">环境与用餐体验是消费者记忆的<b>第一主角</b>，味道是"还不错"的<b>配角</b>。这句话本身就是问题：消费者能一句话讲出我们的环境，却讲不出我们的哪道菜。</div>
+  </div>
+
+  <h4 class="sub">评价关键词分层（按消费者提及主线归纳）</h4>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <tbody><tr><th style="width:130px">类别</th><th>高频关键词</th><th style="width:110px" class="c">信号强度</th></tr>
+      <tr><td><b>环境 / 体验类</b></td><td>环境好、新中式轻奢、无烟系统（"吃完没异味 / 不用洗头"，高频代表词）、包间、适合约会 / 商务 / 家庭聚餐、氛围感、门店宽敞、停车方便</td><td class="c"><span class="badge" style="background:var(--red-soft);color:var(--red-deep)">第一主线</span></td></tr>
+      <tr><td><b>味道 / 菜品类</b></td><td>纯牛油手工炒料、越煮越香、辣而不燥、鲜毛肚脆嫩、现切牛肉嫩 / 纹理漂亮、手工虾滑 Q 弹、千层肚、麻辣牛肉、黑豆腐、蛋炒饭（自助免费）、银耳粥 / 水果自助</td><td class="c"><span class="badge info">第二主线</span></td></tr>
+      <tr><td><b>服务 / 性价比类</b></td><td>服务热情、添汤勤、人均 80-90、菜量实在（部分门店）、免费自助区诚意</td><td class="c"><span class="badge ok">加分项</span></td></tr>
+      <tr><td><b>负面 / 中性残留</b></td><td>份量不足、价格小贵（历史差评残留）、服务意识不到位（个别门店历史差评）、晚 10 点打烊、辣度温和（重辣人群觉得不够劲）</td><td class="c"><span class="badge bad">待清除</span></td></tr>
+    </tbody></table>
+  </div>
+
+  <h3 class="sec" id="c3-3">3、对标必吃榜"味道为先"：关键词占比的结构性缺口</h3>
+  <p class="body">把全部评价关键词按类别合并统计，与 2026 年在榜火锅门店对比：</p>
+  <div class="chart-card">
+    <div class="chart-title">评价关键词占比对比 · 蜀镇 vs 上榜火锅门店</div>
+    <div class="chart-sub">左：蜀镇各店评价关键词印象占比（估算）——环境词是第一主线 ｜ 右：2026 必吃榜上榜火锅门店评价关键词占比（喜三孃 / 荣胜和 / 承裕两口子 / 矮板凳等上榜门店公开评价样本）——味道词是绝对主线</div>
+    <div class="vs-wrap">
+      <div class="vs-head left">蜀镇各店（估算）</div><div style="text-align:center;font-size:12px;color:var(--ink-3)">维度</div><div class="vs-head right">上榜门店</div><div style="text-align:center;font-size:12px;color:var(--ink-3)">缺口</div>
+
+      <div class="vs-dim">环境 / 体验</div>
+      <div style="position:relative"><div class="track" style="position:relative;height:20px;background:#F1EDE6;border-radius:5px"><div style="width:45%;height:100%;background:#B03A2E;border-radius:5px"></div><span style="position:absolute;left:calc(45% + 6px);top:0;font-size:12px;font-weight:700;color:var(--ink-2);line-height:20px">45%</span></div></div>
+      <div style="position:relative"><div class="track" style="position:relative;height:20px;background:#F1EDE6;border-radius:5px"><div style="width:10%;height:100%;background:#3E6B8F;border-radius:5px"></div><span style="position:absolute;left:calc(10% + 6px);top:0;font-size:12px;font-weight:700;color:var(--ink-2);line-height:20px">10%</span></div></div>
+      <div style="text-align:center;font-weight:800;color:var(--bad)">+35pp</div>
+
+      <div class="vs-dim">味道 / 菜品</div>
+      <div style="position:relative"><div class="track" style="position:relative;height:20px;background:#F1EDE6;border-radius:5px"><div style="width:32%;height:100%;background:#B03A2E;border-radius:5px"></div><span style="position:absolute;left:calc(32% + 6px);top:0;font-size:12px;font-weight:700;color:var(--ink-2);line-height:20px">32%</span></div></div>
+      <div style="position:relative"><div class="track" style="position:relative;height:20px;background:#F1EDE6;border-radius:5px"><div style="width:70%;height:100%;background:#3E6B8F;border-radius:5px"></div><span style="position:absolute;left:calc(70% + 6px);top:0;font-size:12px;font-weight:700;color:var(--ink-2);line-height:20px">70%+</span></div></div>
+      <div style="text-align:center;font-weight:800;color:var(--bad)">−38pp</div>
+
+      <div class="vs-dim">服务</div>
+      <div style="position:relative"><div class="track" style="position:relative;height:20px;background:#F1EDE6;border-radius:5px"><div style="width:14%;height:100%;background:#B03A2E;border-radius:5px"></div><span style="position:absolute;left:calc(14% + 6px);top:0;font-size:12px;font-weight:700;color:var(--ink-2);line-height:20px">14%</span></div></div>
+      <div style="position:relative"><div class="track" style="position:relative;height:20px;background:#F1EDE6;border-radius:5px"><div style="width:15%;height:100%;background:#3E6B8F;border-radius:5px"></div><span style="position:absolute;left:calc(15% + 6px);top:0;font-size:12px;font-weight:700;color:var(--ink-2);line-height:20px">15%</span></div></div>
+      <div style="text-align:center;color:var(--ink-3)">基本持平</div>
+
+      <div class="vs-dim">价格 / 其他</div>
+      <div style="position:relative"><div class="track" style="position:relative;height:20px;background:#F1EDE6;border-radius:5px"><div style="width:10%;height:100%;background:#B03A2E;border-radius:5px"></div><span style="position:absolute;left:calc(10% + 6px);top:0;font-size:12px;font-weight:700;color:var(--ink-2);line-height:20px">价格 10%</span></div></div>
+      <div style="position:relative"><div class="track" style="position:relative;height:20px;background:#F1EDE6;border-radius:5px"><div style="width:5%;height:100%;background:#3E6B8F;border-radius:5px"></div><span style="position:absolute;left:calc(5% + 6px);top:0;font-size:12px;font-weight:700;color:var(--ink-2);line-height:20px">其他 5%</span></div></div>
+      <div style="text-align:center;color:var(--ink-3)">—</div>
+    </div>
+    <div class="callout gold" style="margin:18px 0 0">结构性缺口一目了然：<b>蜀镇"环境声量"高出上榜门店 35 个百分点，"味道声量"落后 38 个百分点</b>——与必吃榜"味道为先"的评价模型正好相反。</div>
+  </div>
+
+  <h3 class="sec" id="c3-4">4、三大错位点：数据面合格，信号面失分</h3>
+  <div class="grid3">
+    <div class="k-card"><div class="t">① 口碑结构错位<br><span style="color:var(--red);font-size:13px">"环境型"叙事压制"味道型"信号</span></div><div class="d">翻看我们的评价与全网内容主线：新中式轻奢装修、环绕式无烟系统、包间、免费自助区、适合约会商务是叙事主角；锅底和菜品退居配角。必吃榜评价模型优先识别"好吃"信号——我们的口碑恰恰在这个维度供给不足。</div></div>
+    <div class="k-card"><div class="t">② 大单品（品类代表菜）缺失<br><span style="color:var(--red);font-size:13px">没有一道"提到蜀镇就想到它"的菜</span></div><div class="d">我们有蜀镇经典拼（5 款拼盘）、老饕级鲜毛肚、麻辣牛肉、小黄牛吊龙、大刀腰片……但都是"多点开花"，没有一个形成压倒性的单品心智和评价集中度。</div></div>
+    <div class="k-card"><div class="t">③ 人均与口径错位<br><span style="color:var(--red);font-size:13px">价格带贴线，宣传口径越线</span></div><div class="d">点评人均 80-95 元本身符合必吃榜区间，但"轻奢、高逼格、复古奢华、商务宴请"的对外口径把心理价位顶到 100+，性价比信号被自我削弱。历史评价中"份量不足""价格小贵"的残留口碑，进一步强化了"不够日常"的印象。</div></div>
+  </div>
+
+  <h3 class="sec">📌 蜀镇自检 · 总结</h3>
+  <ol class="num">
+    <li><b>底子是够的：</b>14 年老店、评分 4.7-4.8、人均 80-95 元、味道也还可以——我们不是"不好吃"，是消费者说不出我们哪道菜好吃。</li>
+    <li><b>口碑讲反了：</b>评价里约 45% 在夸环境（新中式、无烟、包间），只有约 32% 在讲味道——而必吃榜恰恰只认"味道"。</li>
+    <li><b>没有招牌菜：</b>十道菜多点开花，消费者一道都记不住；上榜门店都是"一道菜 = 一家店"。</li>
+    <li><b>投放讲错了重点：</b>"轻奢、商务、约会"的宣传口径 + 折扣导向的团购，让投放一直在讲环境和便宜；该讲的味道、回头客、被本地人选择，反而没有讲出来。</li>
+    <li><b>一句话结论：</b>连续落榜不是底盘退步，是风向变了我们没转——差的是<b>口碑结构、大单品、投放聚焦</b>这三件事。</li>
+  </ol>
+</section>
+
+<!-- ================= 四 ================= -->
+<section id="c4">
+  <div class="chap"><span class="no">第四章</span><h2>寻找差距：对标必吃榜同品类门店</h2></div>
+  <div class="lead">选取 2026 年大众点评必吃榜上榜的四家成都火锅门店——<b>喜三孃老火锅、矮板凳老火锅、承裕两口子原味老火锅、荣胜和鲜货火锅</b>，人均 74-91 元，与蜀镇同城、同品类、同价格带直接对标。</div>
+
+  <h3 class="sec" id="c4-1">1、硬指标对比</h3>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <tbody><tr><th style="width:190px">门店</th><th style="width:110px">评分 / 人均</th><th style="width:80px" class="c">店龄</th><th style="width:170px">上榜情况</th><th>大单品 / 记忆点</th><th style="width:200px">口碑叙事主线</th></tr>
+      <tr>
+        <td class="self"><b>蜀镇老火锅</b><br><span style="font-weight:400;font-size:12px">（双楠总店口径）</span></td>
+        <td class="self">4.7-4.8 /<br>80-95 元</td>
+        <td class="self c">14 年</td>
+        <td class="self"><b>2025 入围未上榜</b></td>
+        <td class="self">分散（经典拼 / 毛肚 / 麻辣牛肉）</td>
+        <td class="self">环境 · 轻奢 · 无烟 · 约会商务</td>
+      </tr>
+      <tr><td><b>喜三孃老火锅</b><br><span style="color:var(--ink-3);font-size:12px">金牛区百寿路 · 社区单店</span></td><td>4.7 / 91 元</td><td class="c">社区老店</td><td><b>2026 首次上榜</b></td><td><b>稀溜耙耙鸡脚</b>（2573 人推荐）、手作麻辣牛肉、蟹籽虾滑</td><td>居民楼下的重庆牛油老火锅 · 本地熟客</td></tr>
+      <tr><td><b>矮板凳老火锅</b><br><span style="color:var(--ink-3);font-size:12px">双流航空港店</span></td><td>4.7 / 76 元</td><td class="c">13 年</td><td><b>连续 4 年上榜</b><br><span style="color:var(--ink-3)">（2022 / 2024 / 2025 / 2026）</span></td><td><b>牛油红锅 + 麻辣牛肉</b>（桌桌必点）、精品千层肚、免费自助小吃</td><td>市井夜宵 · 性价比之王 · 10:00-05:00</td></tr>
+      <tr><td><b>承裕两口子原味老火锅</b><br><span style="color:var(--ink-3);font-size:12px">温江总店</span></td><td>4.6 / 91 元</td><td class="c">9 年</td><td><b>连续 2 年上榜</b><br><span style="color:var(--ink-3)">（2025 / 2026）</span></td><td><b>秘制重庆牛油锅底</b>（家味 · 拒绝预制菜）、千丝瀑布毛肚、时令鲜品轮换</td><td>温江土生土长的原创品牌 · 本真烟火味</td></tr>
+      <tr><td><b>荣胜和鲜货火锅</b><br><span style="color:var(--ink-3);font-size:12px">郫都 / 温江直营店</span></td><td>4.6 / 74-86 元</td><td class="c">28 年</td><td><b>2026 上榜</b><br><span style="color:var(--ink-3)">（温江回头客榜第 2）</span></td><td><b>每日现切吊龙 / 匙柄</b>、牛奶鲜鸭血、屠场鲜毛肚、鲜鸭肠</td><td>每日鲜货 · 三代人传承 · 透明厨房现点现做</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">人均价格带对比（可视化）</div>
+    <div class="chart-sub">横轴 40—100 元等比例映射；绿色底纹 = 四家上榜门店人均区间（74-91 元）；红色为蜀镇</div>
+    <div class="price-band">
+      <div class="scale">
+        <!-- 上榜区间底纹：74 元 = 56.7%，91 元 = 85% -->
+        <div class="zone-wrap"><div class="zone" style="left:56.7%;width:28.3%"></div></div>
+
+        <div class="row"><span class="name"><b>蜀镇老火锅</b></span>
+          <div class="lane"><div class="band self" style="left: 85%; width: 11.7%;">91-98 元</div></div>
+        </div>
+        <div class="row"><span class="name">荣胜和鲜货火锅</span>
+          <div class="lane"><div class="band" style="left: 56.7%; width: 15%;">74-83 元</div></div>
+        </div>
+        <div class="row"><span class="name">矮板凳老火锅</span>
+          <div class="lane"><div class="dot" style="left: 78.3%;"></div><span class="tag" style="left: 78.3%;">87元</span></div>
+        </div>
+        <div class="row"><span class="name">承裕两口子</span>
+          <div class="lane"><div class="dot" style="left:85%"></div><span class="tag" style="left:85%">91 元</span></div>
+        </div>
+        <div class="row"><span class="name">喜三孃老火锅</span>
+          <div class="lane"><div class="dot" style="left: 83.3%;"></div><span class="tag" style="left: 83.3%;">90元</span></div>
+        </div>
+
+        <div class="ax">
+          <span style="left:0%">40 元</span><span style="left:33.3%">60 元</span><span style="left:66.7%">80 元</span><span style="left:100%">100 元</span>
+        </div>
+      </div>
+    </div>
+    <div class="callout gold" style="margin:16px 0 0">蜀镇人均 80-95 元 <b>是五家里最高的一档，已越过上榜区间（74-91 元）上沿 4 元</b>，价格带本身可以留在区间内，关键是把"心理价位"的口径拉回来。</div>
+  </div>
+
+  <h3 class="sec" id="c4-2">2、差距的四个方面</h3>
+  <div class="vs-cards">
+    <div class="vs-card good">
+      <div class="cap">上榜门店大单品记忆度</div>
+      <div class="big">1 道菜 = 1 个品牌</div>
+      <div class="small">喜三孃 = 耙鸡脚、荣胜和 = 鲜切吊龙、承裕两口子 = 牛油锅底、矮板凳 = 麻辣牛肉</div>
+    </div>
+    <div class="vs-mid">VS</div>
+    <div class="vs-card mine">
+      <div class="cap">蜀镇大单品记忆度</div>
+      <div class="big">10 道菜 ≈ 0 品牌</div>
+      <div class="small">多点开花，无一单品形成压倒性流量</div>
+    </div>
+  </div>
+  <div class="grid4">
+    <div class="gap-card"><div class="cap">心智差距</div><div class="vs">压缩 vs 摊开</div><div class="d">他们把品牌压缩成一道菜、一门手艺；我们把品牌摊成一种环境、一种场景</div></div>
+    <div class="gap-card"><div class="cap">叙事差距</div><div class="vs">味道 vs 环境</div><div class="d">他们的评价里全是"鸡脚耙得脱骨、吊龙现切、鸭血牛奶鲜、毛肚当天屠宰"；我们的评价里全是"环境好、无烟、包间适合约会"</div></div>
+    <div class="gap-card"><div class="cap">价格差距</div><div class="vs">一致 vs 越线</div><div class="d">上榜者人均 74-91 元且口径一致（"人均80吃到满足、便宜又新鲜"）；我们人均 88-95 元、口径却宣传轻奢商务，心理价位被抬高</div></div>
+    <div class="gap-card"><div class="cap">聚焦差距</div><div class="vs">味道 vs 折扣</div><div class="d">他们的内容每句讲味道、讲回头客、讲本地人常来；我们的投放聚焦在折扣与环境上——投放本身不是问题，问题是该聚焦到味道、回头客、本地人选择</div></div>
+  </div>
+
+  <h3 class="sec" id="c4-3">3、可以学习的方向</h3>
+  <div class="grid2">
+    <div class="k-card"><div class="t">① 喜三孃 —— 把一个单品做成"全城只有它"的记忆点</div><div class="d">喜三孃把一道稀溜耙耙鸡脚做到极致：提前卤制、入锅十分钟脱骨，"耙"成了店招，点评上 <b>2573 人推荐</b>、稳居门店推荐菜第一；配手作麻辣牛肉、蟹籽虾滑、瀑布土豆丝组成"三嬢绝活"矩阵。</div></div>
+    <div class="k-card"><div class="t">② 荣胜和 —— 把"每日鲜货"讲成品牌第一叙事</div><div class="d">荣胜和从 1998 年起做了 28 年，一句"鲜货"立身：黄辣丁选岷江流域的、毛肚要当天屠宰的、鹅肠讲究宽厚脆嫩，菜单主打现切吊龙、鲜切匙柄、牛奶鲜鸭血，配透明厨房现点现做，它把"新鲜"从形容词变成了<b>可验证的日常动作</b>。</div></div>
+    <div class="k-card"><div class="t">③ 矮板凳 —— "性价比感知"管理</div><div class="d">矮板凳人均 76 元、评分 4.7，4 年上榜（2022/2024/2025/2026），免费自助小吃（钵钵鸡、水果、蛋炒饭、银耳汤随便吃）、古色古香的市井氛围。它把"值"写在明面上，让评价里反复出现<b>"人均不到 80 吃到撑"</b>。</div></div>
+    <div class="k-card"><div class="t">④ 承裕两口子 —— "本地原创品牌 + 拒绝预制菜"</div><div class="d">承裕两口子在温江扎根 9 年、连续 2 年上榜（2025/2026），靠一句身份定位讲透自己：<b>"温江土生土长的原创品牌、秘制重庆牛油锅底、自然手作拒绝预制菜"</b>，它从没讲环境，只讲"不敷衍的本真烟火味"。</div></div>
+  </div>
+
+  <h3 class="sec">📌 一分钟看懂 · 本部分通俗总结</h3>
+  <ol class="num">
+    <li>四家上榜店都是<b>"老店 + 一个记得住的记忆点"</b>：喜三孃 = 稀溜耙耙鸡脚、荣胜和 = 每日鲜货现切吊龙、承裕两口子 = 秘制重庆牛油锅底家味、矮板凳 = 牛油红锅夜宵性价比。</li>
+    <li>他们的好评<b>全是味道和食材</b>：鸡脚耙得脱骨、吊龙现切、毛肚当天屠宰、鸭血牛奶鲜；我们的好评全是环境、无烟、适合约会——同样是五星，含金量完全不同。</li>
+    <li><b>价格不是门槛：</b>他们人均 74-91 元，我们 80-95 元，同一价格带；差的是"值不值"的感知——他们被夸"便宜又新鲜、吃到满足"，我们还残留"份量不足、小贵"。</li>
+    <li>他们做的是<b>回头客生意</b>：喜三孃靠本地熟客排队、荣胜和是"温江回头客榜第 2"、承裕两口子是"温江人自己的品牌"；我们的投放讲的是折扣和环境，没讲回头客。</li>
+    <li><b>要学的四招：</b>单品做到极致（喜三孃）、把"鲜货"讲成第一叙事（荣胜和）、全时段与性价比感知（矮板凳）、"本地原创 + 拒绝预制菜"身份卡位（承裕两口子）。</li>
+  </ol>
+
+  <h3 class="sec">📌 正视差距、取长补短</h3>
+  <ol class="num">
+    <li>四家上榜店都是<b>"老店 + 一个记得住的记忆点"</b></li>
+    <li>四家的好评占比最高为<b>味道和食材</b></li>
+    <li>我们都要做的是<b>回头客生意</b></li>
+    <li>可学的四招：<b>单品做到极致、把"鲜货"讲成第一叙事、全时段与性价比感知、"本地原创 + 拒绝预制菜"身份卡位</b></li>
+  </ol>
+</section>
+
+<!-- ================= 五 ================= -->
+<section id="c5">
+  <div class="chap"><span class="no">第五章</span><h2>数据评估：与竞对品牌的线上差距</h2></div>
+
+  <h3 class="sec" id="c5-1">1、竞对数据对比</h3>
+  <div class="tbl-wrap">
+    <table class="tbl" style="min-width:900px">
+      <tbody><tr>
+        <th style="width:76px">重点要素</th><th style="width:104px">类别</th>
+        <th class="c" style="background:#8E2B21">蜀镇老火锅</th>
+        <th class="c">荣胜和鲜货火锅</th><th class="c">喜三孃老火锅</th><th class="c">矮板凳老火锅</th><th class="c">承裕两口子</th>
+        <th style="width:220px">提升建议</th>
+      </tr>
+      <tr><td rowspan="4" style="font-weight:700;color:var(--ink)"><br><br><br><br><br>客流量</td><td>订单</td>
+        <td class="c self num">3490</td><td class="c num">4837</td><td class="c num">14050</td><td class="c num best">30254</td><td class="c num">5468</td>
+        <td>1、套餐结构调整<br>2、增加低价爆款单品提销量</td></tr>
+      <tr><td>曝光人数</td>
+        <td class="c self num">277517</td><td class="c num">612362</td><td class="c num best">1634182</td><td class="c num">541826</td><td class="c num">994936</td>
+        <td>1、线下画面优化<br>2、增加推广预算</td></tr>
+      <tr><td>访问人数（点击量）</td>
+        <td class="c self num">36497</td><td class="c num">50257</td><td class="c num">124456</td><td class="c num">50821</td><td class="c num best">133635</td>
+        <td>1、点击持续投放<br>2、提升门店榜单排名</td></tr>
+      <tr><td>消费人数</td>
+        <td class="c self num">2484</td><td class="c num">3074</td><td class="c num best">19094</td><td class="c num">3313</td><td class="c num">8906</td>
+        <td>1、套餐包含招牌菜增加吸引力<br>2、上线颜值品吸引种草拔草</td></tr>
+
+      <tr><td rowspan="4" style="font-weight:700;color:var(--ink)"><br><br><br><br><br><br><br>评价</td><td>新增评价数</td>
+        <td class="c self num">282</td><td class="c num">185</td><td class="c num best">730</td><td class="c num">596</td><td class="c num">180</td>
+        <td>1、每月下发收藏打卡任务<br>2、门店做好邀约，满意客户做出引导</td></tr>
+      <tr><td>消费后评价数</td>
+        <td class="c self num">44</td><td class="c num rival-top">147</td><td class="c num">137</td><td class="c num">148</td><td class="c num">42</td>
+        <td>1、验券客户主动来访<br>2、门店活动主动告知、引导做活动认证<br>3、消费离店送客时，看引导在线上做出真实的反馈</td></tr>
+      <tr><td>新增收藏人数</td>
+        <td class="c self num">5633</td><td class="c num">5448</td><td class="c num best">15006</td><td class="c num">10786</td><td class="c num">2925</td>
+        <td>1、每月制定目标<br>2、到店有礼物料展示</td></tr>
+      <tr><td>新增打卡人数</td>
+        <td class="c self num">10226</td><td class="c num">8208</td><td class="c num best">13885</td><td class="c num">10874</td><td class="c num">2566</td>
+        <td>1、每月制定目标<br>2、到店有礼物料展示</td></tr>
+
+      <tr class="hl"><td rowspan="5" style="font-weight:700;color:var(--ink)"><br><br><br><br><br><br><br><br>高频关键词</td><td class="c" style="font-weight:800;color:var(--gold);white-space:nowrap">TOP 1</td>
+        <td class="c self kw1">环境好 / 新中式拍照出片</td><td class="c kw1">鲜食食材 / 拒绝冻货</td><td class="c kw1">耙鸡脚 / 卤鸡爪（招牌）</td><td class="c kw1">自助小吃 / 麻酱好吃</td><td class="c kw1">温江本地品牌 / 本地人爱吃</td>
+        <td rowspan="5">竞对品牌门店有<b>自己绝对的关键词</b>，和整体品牌对外宣传点与大众认知品牌的记忆点精准匹配；蜀镇则<b>环境依旧排在菜品和味道之前</b>，缺少核心竞争力</td></tr>
+      <tr class="hl"><td class="c kw-dim">TOP 2</td>
+        <td class="c self kw-dim">老笼鱿鱼 / 肚脆嫩</td><td class="c kw-dim">现切牛肉 / 当日鲜切</td><td class="c kw-dim">性价比高 / 人均五六十</td><td class="c kw-dim">性价比高 / 吃到撑</td><td class="c kw-dim">秘制牛油锅底 / 越煮越香</td></tr>
+      <tr class="hl"><td class="c kw-dim">TOP 3</td>
+        <td class="c self kw-dim">纯牛油锅底 / 越煮越香</td><td class="c kw-dim">明档厨房 / 新鲜看得见</td><td class="c kw-dim">菜品新鲜 / 分量足</td><td class="c kw-dim">市井氛围 / 古色古香</td><td class="c kw-dim">拒绝预制菜 / 手作原味</td></tr>
+      <tr class="hl"><td class="c kw-dim">TOP 4</td>
+        <td class="c self kw-dim">鲜切牛肉 / 食材新鲜</td><td class="c kw-dim">鲜毛肚 / 屠场鲜毛肚</td><td class="c kw-dim">服务热情 / 员工勤快</td><td class="c kw-dim">手工牛油锅底 / 辣而不燥</td><td class="c kw-dim">瀑布毛肚 / 厚切鲜毛肚</td></tr>
+      <tr class="hl"><td class="c kw-dim">TOP 5</td>
+        <td class="c self kw-dim">服务热情 / 包间适合聚餐</td><td class="c kw-dim">现炸酥肉 / 手工黑豆花</td><td class="c kw-dim">鲜鸭血 / 鲜鸭肠</td><td class="c kw-dim">川剧变脸 / 盖碗茶表演</td><td class="c kw-dim">山西风情 / 环境雅致</td></tr>
+    </tbody></table>
+  </div>
+
+  <h3 class="sec" id="c5-2">2、三大方向总结</h3>
+  <div class="grid3">
+    <div class="k-card" style="border-top-color:var(--red)">
+      <div class="t">线上方向</div>
+      <ul class="dot">
+        <li><b>口碑结构调整：</b>评价内容从"环境型"转向"味道型"，引导顾客多写菜品口感、锅底味道、回头客理由</li>
+        <li><b>评价数量翻倍：</b>月新增消费后评价从 44 条 → 100 条+</li>
+        <li><b>页面口径调整：</b>头图 / 相册 / 招牌菜图全部产品化，人均口径稳定在 80-88 元</li>
+        <li><b>大单品心智：</b>确立 1 道招牌菜，集中资源打造成推荐菜第 1 名</li>
+      </ul>
+    </div>
+    <div class="k-card" style="border-top-color:var(--gold)">
+      <div class="t">线下方向</div>
+      <ul class="dot">
+        <li><b>大单品打造：</b>屠场鲜毛肚 / 招牌鲜切牛肉做专属上菜仪式、立牌推荐、套餐植入</li>
+        <li><b>性价比感知：</b>自助小料台 / 自助甜品小吃无限量供应，降低人均感知</li>
+        <li><b>评价引导闭环：</b>每桌消费后引导扫码写评价，送甜品 / 小菜，重点引导图文优质评价</li>
+        <li><b>本地客心智：</b>门店装饰 / 服务员话术突出"14 年老店、本地人常来"，弱化"轻奢商务"</li>
+        <li><b>午市补量：</b>推出工作餐 / 午市特惠套餐，拉高非高峰时段订单密度</li>
+      </ul>
+    </div>
+    <div class="k-card" style="border-top-color:var(--blue)">
+      <div class="t">投放方向</div>
+      <ul class="dot">
+        <li><b>内容口径调整：</b>所有投放内容从"环境好、适合约会"转向"味道好、回头客多、本地人选择"</li>
+        <li><b>关键词调整：</b>推广通关键词全部替换为"本地人推荐火锅""双楠老火锅""鲜货老火锅"</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sec" id="c5-3">3、核心考核指标</h3>
+  <div class="tbl-wrap" style="max-width:760px">
+    <table class="tbl">
+      <tbody><tr><th>指标</th><th class="c">当前值（7-9 月）</th><th class="c">单月月均目标</th><th class="c">3 个月目标</th></tr>
+      <tr><td><b>交易订单量</b></td><td class="c num">3490 单</td><td class="c num" style="color:var(--red);font-weight:700">1500 单+</td><td class="c num" style="color:var(--red);font-weight:700">4500 单+</td></tr>
+      <tr><td><b>曝光人数</b></td><td class="c num">277517</td><td class="c num" style="color:var(--red);font-weight:700">20 万+</td><td class="c num" style="color:var(--red);font-weight:700">60 万+</td></tr>
+      <tr><td><b>访问人数（点击量）</b></td><td class="c num">36497</td><td class="c num" style="color:var(--red);font-weight:700">20000 人+</td><td class="c num" style="color:var(--red);font-weight:700">60000 人+</td></tr>
+      <tr><td><b>新增评价数（点评）</b></td><td class="c num">282</td><td class="c num" style="color:var(--red);font-weight:700">150 条+</td><td class="c num" style="color:var(--red);font-weight:700">500 条+</td></tr>
+      <tr><td><b>消费后评价数</b></td><td class="c num">44</td><td class="c num" style="color:var(--red);font-weight:700">50+</td><td class="c num" style="color:var(--red);font-weight:700">150+</td></tr>
+      <tr><td><b>新增收藏人数</b></td><td class="c num">5633</td><td class="c num" style="color:var(--red);font-weight:700">2500+</td><td class="c num" style="color:var(--red);font-weight:700">7500+</td></tr>
+      <tr><td><b>新增打卡人数</b></td><td class="c num">10226</td><td class="c num" style="color:var(--red);font-weight:700">3500+</td><td class="c num" style="color:var(--red);font-weight:700">10500+</td></tr>
+    </tbody></table>
+  </div>
+
+  <h3 class="sec" id="c5-4">执行机制：日报 / 周报 / 月报</h3>
+  <div class="grid3">
+    <div>
+      <h4 class="sub">📅 工作日播报（日报）</h4>
+      <div class="tbl-wrap">
+        <table class="tbl" style="min-width:0">
+          <tbody><tr><th>类别</th><th>具体内容</th><th>责任人</th></tr>
+          <tr><td><b>评价监控</b></td><td>当日新增评价数量、好评 / 差评数；差评 24 小时内回复处理</td><td>运营专员</td></tr>
+          <tr><td><b>收藏打卡</b></td><td>当日收藏打卡完成情况</td><td>运营专员</td></tr>
+          <tr><td><b>门店执行</b></td><td>当日评价引导完成情况、新客注册会员数、老带新订单数</td><td>门店店长</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+    <div>
+      <h4 class="sub">📊 每周必做（周报）</h4>
+      <div class="tbl-wrap">
+        <table class="tbl" style="min-width:0">
+          <tbody><tr><th>类别</th><th>具体内容</th><th>责任人</th></tr>
+          <tr><td><b>口碑复盘</b></td><td>本周新增评价数、优质率、关键词分布；差评原因归类</td><td>运营专员</td></tr>
+          <tr><td><b>投放复盘</b></td><td>本周投放 ROI、渠道效果对比；下周投放计划调整</td><td>运营专员</td></tr>
+          <tr><td><b>目标进度</b></td><td>本周核心指标完成率（订单量、新客数、评价数）；未达标原因 + 改进措施</td><td>运营负责人</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+    <div>
+      <h4 class="sub">📈 每月必做（月报）</h4>
+      <div class="tbl-wrap">
+        <table class="tbl" style="min-width:0">
+          <tbody><tr><th>类别</th><th>具体内容</th><th>责任人</th></tr>
+          <tr><td><b>数据大盘</b></td><td>月度核心指标完成情况（交易额、订单量、曝光量、新客数、评价数、ROS 分）</td><td>运营 + 负责人</td></tr>
+          <tr><td><b>预算复盘</b></td><td>月度投放预算执行率、ROI 对比；下月预算调整方案</td><td>运营 + 投放</td></tr>
+          <tr><td><b>差距跟踪</b></td><td>对标竞对各项指标差距变化；缩小 / 扩大原因分析</td><td>运营负责人</td></tr>
+          <tr><td><b>动作复盘</b></td><td>本月解决方案明细表中各项动作完成情况；未完成项原因 + 下月跟进</td><td>项目负责人</td></tr>
+          <tr><td><b>下月规划</b></td><td>下月重点动作、预算分配、目标拆解到天 / 周</td><td>项目负责人</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 六 ================= -->
+<section id="c6">
+  <div class="chap"><span class="no">第六章</span><h2>我们应该怎么做：2027-2028 冲榜行动方案</h2></div>
+
+  <div class="quote">
+    <div class="q">总体思路一句话：把蜀镇从"环境型轻奢火锅"重新讲成<span style="color:var(--red)">"双楠 14 年老店 · 鲜货火锅，本地人吃出来的老味道"</span></div>
+  </div>
+
+  <h3 class="sec">1、关键动作</h3>
+  <div class="grid4">
+    <div class="k-card"><div class="t">单品鲜明</div><div class="d">收拢并确立 <b>1 个压倒性大单品</b> + 一组手艺菜矩阵</div></div>
+    <div class="k-card"><div class="t">特色鲜明</div><div class="d">突出<b>"十四年老味道"</b>与鲜货本身，弱化环境宣传用语；源于双楠的老味道，结合双楠本地特色小吃</div></div>
+    <div class="k-card"><div class="t">性价比突出</div><div class="d">强化评价中的消费感知，控制页面人均口径在 <b>80-88 区间</b></div></div>
+    <div class="k-card"><div class="t">宣传口径</div><div class="d">突出产品、返璞归真；从"轻奢商务"转向<b>"本地人爱吃的老味道"</b></div></div>
+  </div>
+
+  <h3 class="sec">2、新 Slogan 方向备选</h3>
+  <div class="slogan">
+    <div class="s">"一锅好味道，炒了十四年"<small>方向 ①</small></div>
+    <div class="s">"回头客更多的鲜货老火锅"<small>方向 ②</small></div>
+    <div class="s">"本地人更爱的鲜货老火锅"<small>方向 ③</small></div>
+  </div>
+
+  <h3 class="sec">3、线上线下齐整改</h3>
+
+  <h4 class="sub">线一 · 品牌宣传口径</h4>
+  <div class="card">
+    <ul class="dot">
+      <li><b>投放内容全面聚焦"味道、回头客、被本地人选择"：</b>探店与种草话术围绕锅底工艺、大口味、回头客复购理由、本地人选择蜀镇的原因展开</li>
+    </ul>
+    <div class="flow">
+      <span class="step">小红书种草</span><span class="arrow">→</span>
+      <span class="step">抖音探店</span><span class="arrow">→</span>
+      <span class="step">点星笔记沉淀</span><span class="arrow">→</span>
+      <span style="font-size:13px;color:var(--ink-3)">（循环）</span>
+    </div>
+  </div>
+
+  <h4 class="sub">线二 · 门店整改（二选一）</h4>
+  <div class="grid2">
+    <div class="k-card" style="border-top-color:var(--red)">
+      <div class="t">① 确立大单品：屠场鲜毛肚 69 / 份（价格差异化 49 / 份）<span class="badge warn" style="margin-left:6px">？需要现场拍定</span></div>
+      <ul class="dot">
+        <li>门店增加立牌及店内装饰，提高点单率</li>
+        <li>专属上菜，当面鲜切摆盘，提升产品价值感</li>
+        <li>招牌菜进套餐，套餐里也能吃到蜀镇招牌菜，增加记忆点</li>
+        <li>菜品点赞：调整后的推荐菜 / 招牌菜做一轮点赞引导，让大单品冲上门店推荐菜首位</li>
+      </ul>
+    </div>
+    <div class="k-card" style="border-top-color:var(--gold)">
+      <div class="t">② 近百种自助小料台，无限量供应（无限制 DIY 甜品 + 小吃 + 主食 + 小料）<span class="badge warn" style="margin-left:6px">？需要现场拍定</span></div>
+      <ul class="dot">
+        <li>成都现有主推自助小料台的品牌没有，形成差异化、独有性</li>
+        <li>用小料台自助小吃侧面降低人均，转变消费者心智</li>
+        <li>打造人均 7-80，就能吃饱吃饱的性价比体验</li>
+        <li>更接地气，符合我们要推的本地人推荐，回头客多的调性和路线</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4 class="sub">线三 · 平台整改</h4>
+  <div class="card">
+    <ul class="dot">
+      <li><b>免费试橙V：</b>各直营店每季度单独报名（注意：免费试产生的评价不计入评选，其价值在流量与口碑洗刷，需配合自然评价管理）</li>
+      <li><b>单品订单：</b>增加消费后点评占比</li>
+      <li><b>价格带优化：</b>重新调整常规价格带，页面人均稳定在 80-88 元区间，套餐做"值"不做"折"</li>
+      <li><b>平台目标执行：</b>以口味分与差评率两个指标对门店做奖惩介入</li>
+      <li><b>平台广告调整：</b>推广通 / 智选展位关键词全部替换为"本地人推荐 &amp; 双楠老火锅 &amp; 鲜货老火锅"产品向字样</li>
+      <li><b>平台页面调整：</b>门店头图、相册首图、招牌菜图、所有物料替换为新版产品向 Slogan，全面弱化环境口径</li>
+    </ul>
+  </div>
+
+  <div class="redline"><b>⚠️ 红线：不得诱导好评、不得炒作刷评</b>——官方标准明示"考察期内因诱导好评、炒作等干扰评价秩序的行为被处罚记录"一票否决。</div>
+</section>
+
+<!-- ================= 七 ================= -->
+<section id="c7">
+  <div class="chap"><span class="no">第七章</span><h2>2027 全年投放预算分配（总预算 72 万，月均 6 万）</h2></div>
+  <div class="lead">根据餐饮行业节点营销规律，按<b>旺季加重、淡季蓄力、大节点爆发</b>分配，搭配冲榜关键词。</div>
+
+  <div class="chart-card">
+    <div class="chart-title">2027 年逐月投放预算（万元）</div>
+    <div class="chart-sub">深色柱 = 大节点爆发月（1 月春节旺季 / 6 月必吃榜公布 / 10 月国庆 + 周年庆）</div>
+    <div class="bars">
+      <div class="bar"><div class="v">8</div><div class="col peak" style="height:100%"></div><div class="m">1月</div></div>
+      <div class="bar"><div class="v">7</div><div class="col" style="height:87.5%"></div><div class="m">2月</div></div>
+      <div class="bar"><div class="v">4</div><div class="col" style="height:50%"></div><div class="m">3月</div></div>
+      <div class="bar"><div class="v">5</div><div class="col" style="height:62.5%"></div><div class="m">4月</div></div>
+      <div class="bar"><div class="v">7</div><div class="col" style="height:87.5%"></div><div class="m">5月</div></div>
+      <div class="bar"><div class="v">8</div><div class="col peak" style="height:100%"></div><div class="m">6月</div></div>
+      <div class="bar"><div class="v">6</div><div class="col" style="height:75%"></div><div class="m">7月</div></div>
+      <div class="bar"><div class="v">6</div><div class="col" style="height:75%"></div><div class="m">8月</div></div>
+      <div class="bar"><div class="v">6</div><div class="col" style="height:75%"></div><div class="m">9月</div></div>
+      <div class="bar"><div class="v">8</div><div class="col peak" style="height:100%"></div><div class="m">10月</div></div>
+      <div class="bar"><div class="v">5</div><div class="col" style="height:62.5%"></div><div class="m">11月</div></div>
+      <div class="bar"><div class="v">6</div><div class="col" style="height:75%"></div><div class="m">12月</div></div>
+    </div>
+  </div>
+
+  <h3 class="sec">蜀镇冲榜作战日历 · 月度版（2027 年）· 预算与重点一览</h3>
+  <div class="tbl-wrap">
+    <table class="tbl" style="min-width:860px">
+      <tbody><tr><th style="width:60px">月份</th><th style="width:130px">阶段主题</th><th style="width:80px" class="c">预算（万元）</th><th>投放重点</th><th style="width:180px">预算说明</th></tr>
+      <tr><td><b>1 月</b></td><td>春节预热 + 冬季旺季</td><td class="c"><b>8</b></td><td>冬季火锅旺季加码：春节家庭聚餐套餐推广；年终聚餐场景投放</td><td>抖音本地推 4 万<br>+ 达人探店 2 万<br>+ 点评推广通 2 万</td></tr>
+      <tr><td><b>2 月</b></td><td>春节 + 情人节</td><td class="c"><b>7</b></td><td>春节假期聚餐流量：情人节双人套餐推广；节后复工引流</td><td>抖音本地推 3.5 万<br>+ 达人探店 2 万<br>+ 点评推广通 1.5 万</td></tr>
+      <tr><td><b>3 月</b></td><td>淡季蓄力期</td><td class="c"><b>4</b></td><td>淡季收缩投放；重点做口碑内容沉淀（小红书种草笔记）；春季新品铺垫</td><td>小红书种草 2 万<br>+ 点评推广通 1.5 万<br>+ 内容制作 0.5 万</td></tr>
+      <tr><td><b>4 月</b></td><td>春游 + 清明</td><td class="c"><b>5</b></td><td>春季新品上市推广：周边春游聚餐场景；必吃榜报名前口碑蓄水</td><td>抖音本地推 2 万<br>+ 达人探店 1.5 万<br>+ 点评推广通 1.5 万</td></tr>
+      <tr><td><b>5 月</b></td><td>五一 + 劳动节</td><td class="c"><b>7</b></td><td>五一假期餐饮高峰：本地游客 + 聚餐双场景；必吃榜评选关键期加码</td><td>抖音本地推 3 万<br>+ 达人探店 2 万<br>+ 点评推广通 2 万</td></tr>
+      <tr class="hl"><td><b>6 月</b></td><td><b>必吃榜公布 + 618</b></td><td class="c"><b>8</b></td><td><b>必吃榜公布期关键战役：</b>上榜 / 落榜复盘传播；618 团购大促；夏季夜宵场景启动</td><td>抖音本地推 3 万<br>+ 达人探店 2.5 万<br>+ 点评推广通 2 万<br>+ 直播 0.5 万</td></tr>
+      <tr><td><b>7 月</b></td><td>夏季夜宵旺季</td><td class="c"><b>6</b></td><td>夏季夜宵场景推广：冰粉 / 冷饮配套菜品；暑期家庭聚餐</td><td>抖音本地推 2.5 万<br>+ 达人探店 2 万<br>+ 点评推广通 1.5 万</td></tr>
+      <tr><td><b>8 月</b></td><td>暑期 + 七夕</td><td class="c"><b>6</b></td><td>暑期聚餐高峰：七夕双人餐；秋季新品预热</td><td>抖音本地推 2.5 万<br>+ 达人探店 2 万<br>+ 点评推广通 1.5 万</td></tr>
+      <tr><td><b>9 月</b></td><td>开学季 + 中秋</td><td class="c"><b>6</b></td><td>秋季新品上市：中秋团圆套餐；教师节 / 开学季营销</td><td>抖音本地推 2.5 万<br>+ 达人探店 2 万<br>+ 点评推广通 1.5 万</td></tr>
+      <tr class="hl"><td><b>10 月</b></td><td><b>国庆 + 周年庆</b></td><td class="c"><b>8</b></td><td><b>国庆黄金周 + 品牌周年庆双节点爆发：</b>周年庆直播 · 达人集中探店；品牌声量峰值</td><td>抖音本地推 3 万<br>+ 达人探店 2.5 万<br>+ 点评推广通 1.5 万<br>+ 直播 1 万</td></tr>
+      <tr><td><b>11 月</b></td><td>双 11 + 秋冬旺季启动</td><td class="c"><b>5</b></td><td>双 11 团购大促；秋冬火锅旺季启动；会员储值推广</td><td>抖音本地推 2 万<br>+ 达人探店 1.5 万<br>+ 点评推广通 1.5 万</td></tr>
+      <tr><td><b>12 月</b></td><td>圣诞 + 年终聚餐</td><td class="c"><b>6</b></td><td>年终聚餐 / 跨岁场景：圣诞跨年活动；冬季旺季持续加码</td><td>抖音本地推 2.5 万<br>+ 达人探店 2 万<br>+ 点评推广通 1.5 万</td></tr>
+    </tbody></table>
+  </div>
+</section>
+
+</main>
+</div>
+
+<!-- ===================== 可编辑工具条 ===================== -->
+
+
+
+
+
+
+
+
+</body></html>
